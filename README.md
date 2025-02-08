@@ -17,3 +17,12 @@ Global styling defined in `/app/ui/global.css`
 https://fonts.google.com/
 [Inter](https://fonts.google.com/specimen/Inter)
 [Lusitana](https://fonts.google.com/specimen/Lusitana)
+
+# Running
+```bash
+docker compose -f ./docker/docker-compose.yml up
+```
+Make `.env` and add connection string to url similar to `.env.example` to make the creds in docker-compose
+
+# Database
+Postgres docker container
