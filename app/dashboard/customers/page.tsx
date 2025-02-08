@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Customers: React.FC = () => {
+export default function Page() {
     return (
         <div>
             <h1>Customers Page</h1>
@@ -8,5 +8,3 @@ const Customers: React.FC = () => {
         </div>
     );
 };
-
-export default Customers;
