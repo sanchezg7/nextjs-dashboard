@@ -6,3 +6,6 @@ For more information, see the [course curriculum](https://nextjs.org/learn) on t
 
 Chapters
 - https://nextjs.org/learn/dashboard-app/getting-started
+
+# CSS
+Global styling defined in `/app/ui/global.css`
