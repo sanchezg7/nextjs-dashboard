@@ -5,6 +5,10 @@ import {lusitana} from '@/app/ui/fonts';
 import {Suspense} from "react";
 import {RevenueChartSkeleton, CardsSkeleton, LatestInvoicesSkeleton} from "@/app/ui/skeletons";
 
+/**
+ * Staggered effect by streaming sections of the page as they become ready; however, they each need wrapper components
+ * @constructor
+ */
 export default async function Page() {
     return (
         <main>
