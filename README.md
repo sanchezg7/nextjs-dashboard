@@ -8,6 +8,7 @@ Chapters
 - https://nextjs.org/learn/dashboard-app/getting-started
 - https://nextjs.org/learn/dashboard-app/css-styling
 - https://nextjs.org/learn/dashboard-app/optimizing-fonts-images
+- https://nextjs.org/learn/dashboard-app/creating-layouts-and-pages
 
 # CSS
 Global styling defined in `/app/ui/global.css`
