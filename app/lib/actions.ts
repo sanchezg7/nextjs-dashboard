@@ -32,10 +32,16 @@ export async function createInvoice(formData: FormData) {
     const amountInCents = amount * 100;
     const date = new Date().toISOString().split('T')[0];
 
-    await sql`
+    try{
+        await sql`
         INSERT INTO invoices (customer_id, amount, status, date)
         VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
-    `
+        `
+    } catch (error) {
+        // This will happen on the server
+        console.log(error);
+    }
+
     /**
      * This will clear the cache and trigger a new request to the server
      */
@@ -54,11 +60,18 @@ export async function updateInvoice(id: string, formData: FormData) {
 
     const amountInCents = amount * 100;
 
-    await sql`
-        UPDATE invoices
-        SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-        WHERE id = ${id}
-    `
+    try {
+        await sql`
+            UPDATE invoices
+            SET customer_id = ${customerId},
+                amount      = ${amountInCents},
+                status      = ${status}
+            WHERE id = ${id}
+        `
+    } catch (error) {
+        // Will log on the server side
+        console.error(error);
+    }
 
     // Calling revalidatePath to clear the client cache and make a new server request.
     revalidatePath('/dashboard/invoices');
