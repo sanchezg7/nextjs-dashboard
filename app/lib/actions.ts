@@ -125,7 +125,7 @@ export async function authenticate(
     try {
         await signIn('credentials', formData);
     }catch (error) {
-        if(error instanceof AuthError){
+        if (error instanceof AuthError) {
             switch (error.type) {
                 case 'CredentialsSignin':
                     return 'Invalid credentials.';
@@ -133,5 +133,19 @@ export async function authenticate(
                     return 'Something went wrong.';
             }
         }
+        /**
+         * This is necessarsy because it relies on throwing an error that will get bubbled up to handle
+         * Error: NEXT_REDIRECT
+         *     at async authenticate (file://C%3A/code/learning/nextjs-dashboard/app/lib/actions.ts:126:8)
+         *   124 | ) {
+         *   125 |     try {
+         * > 126 |         await signIn('credentials', formData);
+         *       |        ^
+         *   127 |     }catch (error) {
+         *   128 |         if (error instanceof AuthError) {
+         *   129 |             switch (error.type) { {
+         *   digest: 'NEXT_REDIRECT;push;http://localhost:3000/dashboard;307;'
+         */
+        throw error;
     }
 }
