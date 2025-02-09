@@ -28,3 +28,7 @@ Make `.env` and add connection string to url similar to `.env.example` to make t
 
 # Database
 Postgres docker container
+
+# Authentication
+Generate a secret key for the app. 
+Add to AUTH_SECRET in `.env`
