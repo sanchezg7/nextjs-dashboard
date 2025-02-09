@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import postgres from "postgres";
 import * as process from "node:process";
 
-const sql = postgres(process.env.POSTGRS_URL!, {});
+const sql = postgres(process.env.POSTGRES_URL!, { });
 
 async function getUser(email: string): Promise<User | undefined>{
     try {
@@ -41,7 +41,10 @@ export const {auth, signIn, signOut} = NextAuth({
                 }
                 const passwordMatch = await bcrypt.compare(password, user.password);
                 if(passwordMatch){
+                    console.log('Password match');
                     return user;
+                } else {
+                    console.log('Password does not match');
                 }
             }
 
