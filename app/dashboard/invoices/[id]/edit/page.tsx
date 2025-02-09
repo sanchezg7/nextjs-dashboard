@@ -1,6 +1,7 @@
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import {fetchCustomers, fetchInvoiceById} from '@/app/lib/data';
+import { notFound } from 'next/navigation';
 
 /**
  * To pre-populate the form fields, you need to fetch the specific invoice using id.
@@ -14,6 +15,9 @@ export default async function Page(props: { params: Promise<{ id: string }>}) {
         fetchInvoiceById(id),
         fetchCustomers()
     ]);
+    if(!invoice) {
+        notFound()
+    }
     return (
         <main>
             <Breadcrumbs
