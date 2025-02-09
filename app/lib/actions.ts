@@ -1,4 +1,8 @@
 'use server'; // explicit server declaration
+/**
+ * These server functions can then be imported and used in Client and Server components.
+ * Any functions included in this file that are not used will be automatically removed from the final application bundle.
+ */
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
@@ -9,26 +13,43 @@ const sql = postgres(process.env.POSTGRES_URL!, { });
 
 const FormSchema = z.object({
     id: z.string(),
-    customerId: z.string(),
-    amount: z.coerce.number(),
-    status: z.enum(['pending', 'paid']),
+    customerId: z.string({
+        invalid_type_error: 'Please select a customer'
+    }),
+    amount: z.coerce.number()
+        // coercing to 0 will default to 0 if empty. So we check for greater than
+        .gt(0, { message: 'Please enter an amount greater than $0' }),
+    status: z.enum(['pending', 'paid'], {
+        invalid_type_error: 'Please enter an invoice status.'
+    }),
     date: z.string(),
 });
 
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 
-/**
- * These server functions can then be imported and used in Client and Server components.
- * Any functions included in this file that are not used will be automatically removed from the final application bundle.
- */
+export type State = {
+    errors?: {
+        customerId?: string[];
+        amount?: string[];
+        status?: string[];
+    };
+    message?: string | null;
+}
 
-export async function createInvoice(formData: FormData) {
+export async function createInvoice(prevState: State, formData: FormData) {
 
-    const { customerId, amount, status } = CreateInvoice.parse({
+    const validationOutcome = CreateInvoice.safeParse({ // changed from .parse to enable validation
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
         status: formData.get('status'),
     });
+    if (!validationOutcome.success) {
+        return {
+            errors: validationOutcome.error.flatten().fieldErrors,
+            message: 'Missing fields. Failed to create invoice.'
+        };
+    }
+    const { customerId, amount, status } = validationOutcome.data;
     const amountInCents = amount * 100;
     const date = new Date().toISOString().split('T')[0];
 
