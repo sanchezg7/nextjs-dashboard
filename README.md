@@ -30,5 +30,6 @@ Make `.env` and add connection string to url similar to `.env.example` to make t
 Postgres docker container
 
 # Authentication
-Generate a secret key for the app. 
+Generate a secret key for the app.
+[Generate on windows](https://generate-secret.vercel.app/32)
 Add to AUTH_SECRET in `.env`
